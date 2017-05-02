@@ -7,15 +7,20 @@
 #include <unistd.h>     //close
 #include <string>
 #include <sstream>
+#include <iostream>
+#include <unistd.h>
+
+#include "Joystick.cpp"
 
 #define MAXMSG 1024
-#define MAXNAME 100
 #define PORTNUM 4325
 
 int main(int argc, char *argv[])
 {
 
-    for(int i=0;i<10;i++){
+	Joystick j1;
+
+    while(1){
 
         int     sockfd;
         struct sockaddr_in servaddr;
@@ -29,28 +34,32 @@ int main(int argc, char *argv[])
 
         if (sockfd == -1)
         {
-            printf("Falha ao executar socket()\n");
+            std::cout << "Falha ao criar o socket" << std::endl;
             exit(EXIT_FAILURE);
         }
 
         if(connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) ==-1){
-            printf("Falha ao executar connect()\n");
-            exit(EXIT_FAILURE);
+            std::cout << "Jogo finalizado" << std::endl;
+            exit(EXIT_SUCCESS);
         }
 
         //from this point you can start write to the server and wait for its respose
 
         std::stringstream buffer;
 
-        buffer << "Opa como vai? " << i;
+        buffer << "A: " << j1.escolherAngulo() << " B: " << j1.valorBotao() << " F: " << j1.valorFotossensor();
 
         //Escrevendo no canal de comunicação do socket
         if (send(sockfd, buffer.str().c_str(), buffer.str().length(),0)<0){
-            printf("Erro ao escrever no socket\n");
-            exit(EXIT_FAILURE);
+            std::cout << "Jogo finalizado" << std::endl;
+            exit(EXIT_SUCCESS);
+        }else{
+        	std::cout << "Enviado para o socket: " << buffer.str() << std::endl;
         }
-        
+       	
         close(sockfd);
+    
+        usleep(100000);
     }
         
     return 0;
