@@ -1,7 +1,5 @@
 package nucleoDoJogo;
 
-import java.io.IOException;
-
 import comunicacao.Servidor;
 
 public class Jogo {
@@ -40,11 +38,14 @@ public class Jogo {
     public void executar(){
        //Iniciando thread do servidor 
        servidorThread.start();
-       
-       System.out.println("Olá");
-       
+
        //Game loop
        while(!acabou){
+           //Implementar
+           
+           logica();
+           
+           desenharTela();
            
        }
       
@@ -52,6 +53,10 @@ public class Jogo {
        
     }
         
+    private void logica() {
+        
+    }
+
     private void finalizar(Jogador jA) {
        System.out.println("Parabêns ao Jogador " + "<Nome>" + "Pela vitória");
     }
