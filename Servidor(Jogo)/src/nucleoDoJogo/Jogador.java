@@ -128,7 +128,7 @@ public class Jogador {
       	
         	//valorP = new Thread(potenciometro,ref(valorPotenciometro),j.escolherAngulo());
         	//valorP.join();
-        	//
+        	//DUVIDA!!!! Preciso instanciar de novo o servidor? como fica?
 	
         	System.out.println(nome + ", escolha o ângulo do tiro: ");
         	System.out.println(valorPotenciometro);
