@@ -40,4 +40,8 @@ public class Servidor implements Runnable{
             e.printStackTrace();
         }
     }
+    
+    public String getInformacao(){
+    	return this.informacao;
+    }
 }
