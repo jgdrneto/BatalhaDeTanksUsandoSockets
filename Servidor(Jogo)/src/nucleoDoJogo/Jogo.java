@@ -130,12 +130,8 @@ public class Jogo {
        int i = -1;
        
        String valor = servidor.getInformacao();
-       String[] valorFotoC = valor.split("F:");
-       String[] valorFotoC1 = valorFotoC[1].split(";");
-       i =Integer.valueOf(valorFotoC1[0]);
-        	//Thread threadA (lerFotossensor,ref(i),jogadorDaVez);
-              //  threadA.run();
-                
+       Comandos c = new Comandos(valor);
+       i =c.getValorFoto();
        ACAO ac;
 
                 //Dorme ate receber valor aceitavel

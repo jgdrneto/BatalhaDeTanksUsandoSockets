@@ -82,14 +82,9 @@ public class Jogador {
         int valorBotao = -1;
         int valorPotenciometro=-1;
         
-        String[] valorBotaoC = valor.split("B:");
-        String[] valorBotaoC1 = valorBotaoC[1].split(";");
-        valorBotao =Integer.valueOf(valorBotaoC1[0]);  
-        
-        //aqui talvez seja o primeiro campo da split
-        String[] valorPotenciometroC = valor.split("A:");
-        String[] valorPotenciometroC1 = valorPotenciometroC[1].split(";");
-        valorPotenciometro =Integer.valueOf(valorPotenciometroC1[0]); 
+        Comandos comando = new Comandos(valor);
+        valorBotao = comando.getValorBotao();
+        valorPotenciometro = comando.getValorPotenciometro(); 
          
         
       
@@ -128,14 +123,23 @@ public class Jogador {
       	
         	//valorP = new Thread(potenciometro,ref(valorPotenciometro),j.escolherAngulo());
         	//valorP.join();
-        	//DUVIDA!!!! Preciso instanciar de novo o servidor? como fica?
+        	//criar uma thread para receber o valor da informação, dando prioridade maior potenciometro.
+        	//usar a priodidade de thread, para que n importe do valor do botão nesse momento.
+        	Thread potenciometro = new Thread(serv);
+    		potenciometro.setPriority(Thread.MAX_PRIORITY);
+    		potenciometro.start();
+    		
+    		Thread botao = new Thread(serv);
+    		botao.setPriority(Thread.MIN_PRIORITY);
+    		botao.start();
 	
         	System.out.println(nome + ", escolha o ângulo do tiro: ");
         	System.out.println(valorPotenciometro);
 	
         	if(i==valorPotenciometro){
         		//valorB = new Thread(botao,ref(valorBotao),j.valorBotao());	
-        		//valorB.join();		
+        		//valorB.join();	
+        		
         	}
 	
         	i=valorPotenciometro;
