@@ -9,30 +9,18 @@ public class Jogo {
 	
 	public static final int ANGULO_MIN =18;
     public static final int ANGULO_MAX =82;    
+    
     Servidor servidor;
     Jogador jogador1;
     Jogador jogador2;
+    Dados dados;
     boolean terminou;
     Thread servidorThread;
 	private Scanner ler;
     
     public enum ACAO{	
-    	ATACAR(1), MOVER(2);
-    	
-    	private final int valor;
-    	ACAO(int valorOpcao){
-    		valor = valorOpcao;
-    	}
-    	public int getValor(){
-    		return valor;
-    	}
-    }
-    
-    public final static void clearConsole(){
-        
-        for(int i=0;i<50;i++){
-            System.out.println();
-        }
+    	ATACAR, 
+    	MOVER;
     }
     
     public Jogo(int numeroPorta){
@@ -44,6 +32,8 @@ public class Jogo {
         
         //Definindo com Daemon (Execução em segundo plano)
         servidorThread.setDaemon(true); 
+        
+        this.dados = new Dados(servidor);
         
         //Definindo nome do jogador 1
         String nomeJ1 = definirNome(1);
@@ -84,7 +74,8 @@ public class Jogo {
     }
         
     private void logica() throws InterruptedException {
-    	Jogador jogadorDaVez;  
+    	
+        Jogador jogadorDaVez;  
         Jogador jogadorAdversario;
         
         jogadorDaVez = jogador2;
@@ -100,7 +91,7 @@ public class Jogo {
             switch(acao){
                 case ATACAR :
                     // Jogador da Vez ataca o jogador Adversário
-                    jogadorDaVez.atacar(jogadorAdversario, servidor);    
+                    jogadorDaVez.atacar(jogadorAdversario, dados);    
                     break;
                 case MOVER :
                     
@@ -118,28 +109,20 @@ public class Jogo {
 
     
     ACAO escolherAcao(Jogador jogadorDaVez) throws InterruptedException{
-
-    	    
-    	desenharTela();
-    	System.out.println(jogadorDaVez.getNome() + ",  o que você deseja fazer:  ");
-        System.out.println( "Cubra o fotosensor para escolher se mover" );
-        System.out.println("Não cubra o fotosensor para escolher atacar");
-        System.out.println("Você tem 5 segundos para decidir");
+  	    
+       desenharTela();
+       System.out.println(jogadorDaVez.getNome() + ",  o que você deseja fazer:  "); 
+       System.out.println( "Cubra o fotosensor para escolher se mover" );
+       System.out.println("Não cubra o fotosensor para escolher atacar");
+       System.out.println("Você tem 5 segundos para decidir");
                 
        Thread.sleep(5000);
-       int i = -1;
        
-       String valor = servidor.getInformacao();
-       Comandos c = new Comandos(valor);
-       i =c.getValorFoto();
+       int fotossensor = dados.getValorFoto();
+       
        ACAO ac;
 
-                //Dorme ate receber valor aceitavel
-       while(i==-1){
-    	   Thread.sleep(5000);
-       }
-
-       if(i==0){
+       if(fotossensor==0){
     	   ac = ACAO.MOVER;
        }else{
     	   ac = ACAO.ATACAR;
@@ -149,7 +132,7 @@ public class Jogo {
     }
 
     private void finalizar(Jogador jA) {
-       System.out.println("Parabéns ao Jogador " + "<Nome>" + "Pela vitória");
+       System.out.println("Parabéns ao jogador " + jA.getNome() + " pela vitória");
     }
 
     public void desenharTela(){

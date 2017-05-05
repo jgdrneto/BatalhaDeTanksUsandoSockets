@@ -27,7 +27,7 @@ class Joystick{
         }
         
         int valorFotossensor(){
-            if(GPIO::input(PORTNUMBER::P9_40)<=2048){
+            if(GPIO::input(PORTNUMBER::P9_40)<=1024){
 	    	    return VALUE::LOW;	
 	        }else{
 	    	    return VALUE::HIGH;

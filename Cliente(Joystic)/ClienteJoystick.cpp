@@ -43,8 +43,6 @@ int main(int argc, char *argv[])
             exit(EXIT_SUCCESS);
         }
 
-        //from this point you can start write to the server and wait for its respose
-
         std::stringstream buffer;
 
         buffer << "A: " << j1.escolherAngulo() << " B: " << j1.valorBotao() << " F: " << j1.valorFotossensor();

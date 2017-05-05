@@ -1,27 +1,17 @@
 package nucleoDoJogo;
 
-import java.util.Objects;
 import java.util.Vector;
-
-import comunicacao.Servidor;
 
 public class Jogador {
 	
-	private final String nome;
-    Vector<Integer> atingido = new Vector<>();
+	private String nome;
+    Vector<Integer> atingido = new Vector<Integer>();
     private int posicao;
     ESTADO estado;
     
     public enum ESTADO{	
-    	MORTO(1), VIVO(2);
-    	
-    	private final int valor;
-    	ESTADO(int valorOpcao){
-    		valor = valorOpcao;
-    	}
-    	public int getValor(){
-    		return valor;
-    	}
+    	MORTO, 
+    	VIVO;
     }
 	
 	Jogador(String nNome, int nPosicao) {
@@ -44,14 +34,6 @@ public class Jogador {
         return this.nome.equals(jogador.getNome()) && this.posicao == jogador.getposicao();
     } 
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 29 * hash + Objects.hashCode(this.nome);
-        hash = 29 * hash + this.posicao;
-        return hash;
-    }
-    
     String getNome() {
         return this.nome;
     }
@@ -69,41 +51,22 @@ public class Jogador {
 
     	posicao = nPosicao;
 
-    	//Utilidades::limpaTela();
+    	Utilidades.LimpaTela();
 
-    	System.out.println(nome + "se mexeu para um novo lugar");
+    	System.out.println(nome + " se mexeu para um novo lugar");
 
     	return true;
     }
     
-    void atacar(Jogador jAdversario, Servidor serv) throws InterruptedException {
-    	String valor = serv.getInformacao();
+    void atacar(Jogador jAdversario, Dados dados) throws InterruptedException {
+        
         int i=0;
         int valorBotao = -1;
         int valorPotenciometro=-1;
         
-        Comandos comando = new Comandos(valor);
-        valorBotao = comando.getValorBotao();
-        valorPotenciometro = comando.getValorPotenciometro(); 
-         
-        
-      
-      //Thread tPot(potenciometro,ref(valorPotenciometro),j.escolherAngulo());	      
-      //Thread tBot(botao,ref(valorBotao),j.valorBotao());
-      
-      //tPot.join();
-      //tBot.join();
-      
-        while(valorPotenciometro==-1){
-        	Thread.sleep(1000);
-        }
-        
-        while(valorBotao==-1){
-	      	Thread.sleep(1000);
-	    }
-        /*Thread valorP;
-        Thread valorB;*/
- 		
+        valorBotao = dados.getValorBotao();
+        valorPotenciometro = dados.getValorPotenciometro(); 
+	
         while(valorBotao==0){
 
         	System.out.println("---------------------------------------------");;
@@ -121,35 +84,15 @@ public class Jogador {
         	}	 	
         	System.out.println("}");        
         	
-        	valorPotenciometro = comando.getValorPotenciometro(); 
-      	
-        	//valorP = new Thread(potenciometro,ref(valorPotenciometro),j.escolherAngulo());
-        	//valorP.join();
-        	Thread potenciometro = new Thread(serv);
-    		potenciometro.setPriority(Thread.MAX_PRIORITY);
-    		potenciometro.start();
-    		
-    		valor = serv.getInformacao();
-    		comando = new Comandos(valor);
-    		valorPotenciometro = comando.getValorPotenciometro(); 
-    		
-    		Thread botao = new Thread(serv);
-    		botao.setPriority(Thread.MIN_PRIORITY);
-    		botao.start();
-	
-        	System.out.println(nome + ", escolha o ângulo do tiro: ");
-        	System.out.println(valorPotenciometro);
-	
-        	if(i==valorPotenciometro){
-        		//valorB = new Thread(botao,ref(valorBotao),j.valorBotao());	
-        		//valorB.join();
+        	int poteAnt = dados.getValorPotenciometro();
+        	
+        	Thread.sleep(100);
+        	
+        	int poteDepois = dados.getValorPotenciometro();
         		
-        		valorBotao = comando.getValorBotao();
-        		System.out.println("valor: " + valorBotao);
-        		
+        	if(valorPotenciometro==poteAnt && valorPotenciometro==poteDepois){
+        	    valorBotao = dados.getValorBotao();
         	}
-	
-        	i=valorPotenciometro;
 
         	Thread.sleep(2000);
       }
