@@ -119,7 +119,7 @@ public class Jogador {
 	
       //Verificar se o ataque acertou o advsário
       if(valorPotenciometro==jAdversario.posicao){
-        jAdversario.estado = ESTADO.MORTO;
+          jAdversario.estado = ESTADO.MORTO;
       }	
     }
 
