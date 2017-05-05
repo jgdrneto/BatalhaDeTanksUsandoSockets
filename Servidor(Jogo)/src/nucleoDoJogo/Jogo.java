@@ -54,7 +54,9 @@ public class Jogo {
         
         //Definindo nome do jogador 1
         String nomeJ1 = definirNome(1);
-            
+        
+        System.out.println("");
+        
         //Definindo posicao do jogador 1
         int pJ1 = novaPosicao();
             
@@ -156,9 +158,7 @@ public class Jogo {
                       
         System.out.println("Qual o nome do jogador " + i + " : ");
         nome = ler.nextLine();
-        
-        Utilidades.LimpaTela();
-        
+
         return nome;
     }
     
