@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import comunicacao.Servidor;
+import nucleoDoJogo.Jogador.ESTADO;
 
 public class Jogo {
 	
@@ -38,6 +39,19 @@ public class Jogo {
         
         this.dados = new Dados(servidor);
         
+        terminou=false;
+        
+        introducao();
+    }
+    
+    private void introducao(){
+        
+        Utilidades.LimpaTela();
+        
+        System.out.println("Bem vindo ao jogo Batalha de Tanques o/");
+        
+        System.out.println("\n\n");
+        
         //Definindo nome do jogador 1
         String nomeJ1 = definirNome(1);
             
@@ -53,28 +67,9 @@ public class Jogo {
         //Criando os jogadores
         jogador1 = new Jogador(nomeJ1, pJ1);
         jogador2 = new Jogador(nomeJ2, pJ2);
-        
-        terminou=false;
-        
     }
-    
-    public void executar() throws InterruptedException{
-      
-       //Game loop
-       while(!terminou){
-           //Implementar
-           
-           logica();
-           
-           desenharTela();
-           
-       }
-      
-       finalizar(jogador1);
-       
-    }
-        
-    private void logica() throws InterruptedException {
+            
+    public void executar() throws InterruptedException {
     	
         Jogador jogadorDaVez;  
         Jogador jogadorAdversario;
@@ -83,9 +78,14 @@ public class Jogo {
         jogadorAdversario = jogador1;
         
         while(!terminou){
+            
+            Utilidades.LimpaTela();
+            
             //Troca a vez do jogador    
             jogadorDaVez = trocaDeJogador(jogadorDaVez);
             jogadorAdversario = trocaDeJogador(jogadorDaVez);
+            
+            desenharTela(jogadorDaVez);
             
             ACAO acao = escolherAcao(jogadorDaVez);
             
@@ -103,22 +103,23 @@ public class Jogo {
                         seMover = jogadorDaVez.mover(novaPosicao());
                     }
                     
-                    break;
+                break;
             }
+            
+            Thread.sleep(2000);
+            
+            if(jogadorAdversario.getEstado()==ESTADO.MORTO){
+                terminou=true;
+            }
+            
         }
+        
+        finalizar(jogadorDaVez);
     }
 
     
     ACAO escolherAcao(Jogador jogadorDaVez) throws InterruptedException{
-  	    
-       desenharTela();
-       System.out.println(jogadorDaVez.getNome() + ",  o que você deseja fazer:  "); 
-       System.out.println( "Cubra o fotosensor para escolher se mover" );
-       System.out.println("Não cubra o fotosensor para escolher atacar");
-       System.out.println("Você tem 5 segundos para decidir");
-                
-       Thread.sleep(5000);
-       
+  	   
        int fotossensor = dados.getValorFoto();
        
        ACAO ac;
@@ -133,22 +134,31 @@ public class Jogo {
     }
 
     private void finalizar(Jogador jA) {
+        
+       Utilidades.LimpaTela();
+        
        System.out.println("Parabéns ao jogador " + jA.getNome() + " pela vitória");
     }
 
-    public void desenharTela(){
-    	System.out.println("---------------------------------------------");
+    public void desenharTela(Jogador jogadorDaVez) throws InterruptedException{
+        
+        System.out.println(jogadorDaVez.getNome() + ", o que você deseja fazer:  "); 
+        System.out.println("Cubra o fotosensor para escolher se mover" );
+        System.out.println("Não cubra o fotosensor para escolher atacar");
+        System.out.println("Você tem 5 segundos para decidir");
+                 
+        Thread.sleep(5000);
     }
     
     String definirNome(int i){
         ler = new Scanner(System.in);
         String nome;
-            
-        desenharTela();
-            
+                      
         System.out.println("Qual o nome do jogador " + i + " : ");
         nome = ler.nextLine();
-            
+        
+        Utilidades.LimpaTela();
+        
         return nome;
     }
     

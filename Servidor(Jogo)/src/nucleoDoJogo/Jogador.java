@@ -5,9 +5,9 @@ import java.util.Vector;
 public class Jogador {
 	
 	private String nome;
-    Vector<Integer> atingido = new Vector<Integer>();
+    private Vector<Integer> atingido = new Vector<Integer>();
     private int posicao;
-    ESTADO estado;
+    private ESTADO estado;
     
     public enum ESTADO{	
     	MORTO, 
@@ -60,20 +60,21 @@ public class Jogador {
     
     void atacar(Jogador jAdversario, Dados dados) throws InterruptedException {
         
-        int i=0;
-        int valorBotao = -1;
-        int valorPotenciometro=-1;
+        int valorBotao;
+        int valorPotenciometro;
         
         valorBotao = dados.getValorBotao();
-        valorPotenciometro = dados.getValorPotenciometro(); 
-	
+        valorPotenciometro =  dados.valorPotenciometro;
+        
         while(valorBotao==0){
-
-        	System.out.println("---------------------------------------------");;
+            
+            Utilidades.LimpaTela();
+            
+        	System.out.println("---------------------------------------------");
 
         	//Impressão das posições dos tiros ja realizados
 
-        	System.out.print( "Posições já atiradas por você : { ");
+        	System.out.print( "Posições já atiradas por " + this.nome + " { ");
         	
         	for( int c=0;c< jAdversario.atingido.size();c++){
         		if(c+1<jAdversario.atingido.size()){
@@ -84,17 +85,20 @@ public class Jogador {
         	}	 	
         	System.out.println("}");        
         	
+        	System.out.println("Angulação do tiro: " + valorPotenciometro);
+            
+            System.out.println("---------------------------------------------");
+        	
         	int poteAnt = dados.getValorPotenciometro();
         	
-        	Thread.sleep(100);
+        	Thread.sleep(400);
         	
-        	int poteDepois = dados.getValorPotenciometro();
+        	valorPotenciometro = dados.getValorPotenciometro();
         		
-        	if(valorPotenciometro==poteAnt && valorPotenciometro==poteDepois){
+        	if(poteAnt==valorPotenciometro){
         	    valorBotao = dados.getValorBotao();
         	}
-
-        	Thread.sleep(2000);
+        	
       }
       
       System.out.println("Botão pressionado, mudando vez para o adversário");	
@@ -102,21 +106,26 @@ public class Jogador {
       boolean jaExiste=false;	
 
       for(int p : jAdversario.atingido){
-    	  if(p==i){
+    	  if(p==valorPotenciometro){
     		  jaExiste=true; 	
     	  }
       }
  			
       //Adicioanando valor aos locais que ele não pode mais ir
       if (jaExiste==false){
-    	  jAdversario.atingido.add(i);
+    	  jAdversario.atingido.add(valorPotenciometro);
       }      
-      System.out.println( "Valor da sua posição" + posicao);
+      System.out.println( "Valor da sua posição: " + posicao);
 	
       //Verificar se o ataque acertou o advsário
-      if(i==jAdversario.posicao){
+      if(valorPotenciometro==jAdversario.posicao){
         jAdversario.estado = ESTADO.MORTO;
       }	
     }
 
+    public ESTADO getEstado() {
+        return estado;
+    }
+   
+    
 }
