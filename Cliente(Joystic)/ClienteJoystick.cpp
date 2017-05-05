@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
         memset(&servaddr, 0x00, sizeof(servaddr));
         servaddr.sin_family = AF_INET;
         servaddr.sin_port = htons(PORTNUM);
-        inet_pton(AF_INET, "127.0.0.1", &servaddr.sin_addr);
+        inet_pton(AF_INET, "192.168.7.1", &servaddr.sin_addr);
 
         sockfd = socket(AF_INET, SOCK_STREAM, 0);
 

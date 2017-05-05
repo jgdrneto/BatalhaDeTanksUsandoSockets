@@ -33,6 +33,9 @@ public class Jogo {
         //Definindo com Daemon (Execução em segundo plano)
         servidorThread.setDaemon(true); 
         
+        //Iniciando thread do servidor 
+        servidorThread.start();
+        
         this.dados = new Dados(servidor);
         
         //Definindo nome do jogador 1
@@ -56,9 +59,7 @@ public class Jogo {
     }
     
     public void executar() throws InterruptedException{
-       //Iniciando thread do servidor 
-       servidorThread.start();
-
+      
        //Game loop
        while(!terminou){
            //Implementar
