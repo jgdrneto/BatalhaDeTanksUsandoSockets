@@ -106,11 +106,11 @@ public class Jogador {
  		
         while(valorBotao==0){
 
-        	//Utilidades::limpaTela();
+        	System.out.println("---------------------------------------------");;
 
         	//Impressão das posições dos tiros ja realizados
 
-        	System.out.println( "Posições já atiradas por você : { ");
+        	System.out.print( "Posições já atiradas por você : { ");
         	
         	for( int c=0;c< jAdversario.atingido.size();c++){
         		if(c+1<jAdversario.atingido.size()){
@@ -120,14 +120,18 @@ public class Jogador {
         		}    
         	}	 	
         	System.out.println("}");        
+        	
+        	valorPotenciometro = comando.getValorPotenciometro(); 
       	
         	//valorP = new Thread(potenciometro,ref(valorPotenciometro),j.escolherAngulo());
         	//valorP.join();
-        	//criar uma thread para receber o valor da informação, dando prioridade maior potenciometro.
-        	//usar a priodidade de thread, para que n importe do valor do botão nesse momento.
         	Thread potenciometro = new Thread(serv);
     		potenciometro.setPriority(Thread.MAX_PRIORITY);
     		potenciometro.start();
+    		
+    		valor = serv.getInformacao();
+    		comando = new Comandos(valor);
+    		valorPotenciometro = comando.getValorPotenciometro(); 
     		
     		Thread botao = new Thread(serv);
     		botao.setPriority(Thread.MIN_PRIORITY);
@@ -138,7 +142,10 @@ public class Jogador {
 	
         	if(i==valorPotenciometro){
         		//valorB = new Thread(botao,ref(valorBotao),j.valorBotao());	
-        		//valorB.join();	
+        		//valorB.join();
+        		
+        		valorBotao = comando.getValorBotao();
+        		System.out.println("valor: " + valorBotao);
         		
         	}
 	

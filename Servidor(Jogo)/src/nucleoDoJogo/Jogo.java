@@ -120,7 +120,7 @@ public class Jogo {
     ACAO escolherAcao(Jogador jogadorDaVez) throws InterruptedException{
 
     	    
-        	//Utilidades::limpaTela();
+    	desenharTela();
     	System.out.println(jogadorDaVez.getNome() + ",  o que você deseja fazer:  ");
         System.out.println( "Cubra o fotosensor para escolher se mover" );
         System.out.println("Não cubra o fotosensor para escolher atacar");
@@ -153,14 +153,14 @@ public class Jogo {
     }
 
     public void desenharTela(){
-        
+    	System.out.println("---------------------------------------------");
     }
     
     String definirNome(int i){
         ler = new Scanner(System.in);
         String nome;
             
-        //Utilidades::limpaTela();
+        desenharTela();
             
         System.out.println("Qual o nome do jogador " + i + " : ");
         nome = ler.nextLine();
